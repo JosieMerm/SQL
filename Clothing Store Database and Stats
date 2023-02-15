@@ -1,0 +1,28 @@
+-- Create a clothing store database
+
+CREATE TABLE store (id INTEGER PRIMARY KEY, item TEXT, color TEXT, amount_sold INTEGER, price INTEGER);
+
+INSERT INTO store VALUES (1, "shirt", "red", 3, 12);
+INSERT INTO store VALUES (2, "pants", "blue", 4, 26);
+INSERT INTO store VALUES (3, "hat","pink", 1, 6);
+INSERT INTO store VALUES (4, "socks","white", 3, 4);
+INSERT INTO store VALUES (5, "shoes", "black", 4, 50);
+INSERT INTO store VALUES (6, "shirt", "orange", 5, 12);
+INSERT INTO store VALUES (7, "shirt","yellow", 6, 12);
+INSERT INTO store VALUES (8, "pants", "orange", 8, 26);
+INSERT INTO store VALUES (9, "pants", "yellow", 11, 26);
+INSERT INTO store VALUES (10, "hat", "red", 2, 6);
+INSERT INTO store VALUES (11, "hat", "green", 4, 6);
+INSERT INTO store VALUES (12, "socks", "black", 16, 4);
+INSERT INTO store VALUES (13, "socks", "brown", 1, 4);
+INSERT INTO store VALUES (14, "shoes", "red", 3, 50);
+INSERT INTO store VALUES (15, "shoes", "orange", 12, 50);
+
+--Display database ordered by price
+SELECT * FROM store ORDER BY price;
+
+--Display total number of units sold
+SELECT SUM(amount_sold) FROM store;
+
+--Display most popular pants color sold
+SELECT color, amount_sold FROM store WHERE item = "pants" ORDER BY amount_sold DESC;
