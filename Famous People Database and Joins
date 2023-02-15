@@ -1,0 +1,84 @@
+/* Create table about the people and what they do here */
+CREATE TABLE kardashians (id INTEGER PRIMARY KEY, name TEXT, kids INTEGER);
+INSERT INTO kardashians VALUES (1, "Kris", 6);
+INSERT INTO kardashians VALUES (2, "Kourtney", 3);
+INSERT INTO kardashians VALUES (3, "Kim", 4);
+INSERT INTO kardashians VALUES (4, "Khloe", 1);
+INSERT INTO kardashians VALUES (5, "Kendall", 0);
+INSERT INTO kardashians VALUES (6, "Kylie", 2);
+INSERT INTO kardashians VALUES (7, "Rob", 1);
+
+CREATE TABLE children (id INTEGER PRIMARY KEY, kardashians_id INTEGER, name TEXT);
+INSERT INTO children VALUES (1, 1, "Kourtney");
+INSERT INTO children VALUES (2, 1, "Kim");
+INSERT INTO children VALUES (3, 1, "Khloe");
+INSERT INTO children VALUES (4, 1, "Kendall");
+INSERT INTO children VALUES (5, 1, "Kylie");
+INSERT INTO children VALUES (6, 1, "Rob");
+INSERT INTO children VALUES (7, 2, "Mason");
+INSERT INTO children VALUES (8, 2, "Reign");
+INSERT INTO children VALUES (9, 2, "Penelope");
+INSERT INTO children VALUES (10, 3, "North");
+INSERT INTO children VALUES (11, 3, "Saint");
+INSERT INTO children VALUES (12, 3, "Chicago");
+INSERT INTO children VALUES (13, 3, "Psalm");
+INSERT INTO children VALUES (14, 4, "True");
+INSERT INTO children VALUES (15, 6, "Stormi");
+INSERT INTO children VALUES (16, 6, "Wolf");
+INSERT INTO children VALUES (17, 7, "Dream");
+
+CREATE TABLE partners (id INTEGER PRIMARY KEY, kardashians_id INTEGER, name TEXT);
+INSERT INTO partners VALUES (1,3, "Damon Thomas");
+INSERT INTO partners VALUES (2,3, "Kris Humphries");
+INSERT INTO partners VALUES (3,3, "Kanye West");
+INSERT INTO partners VALUES (4,3, "Pete Davidson");
+INSERT INTO partners VALUES (5,3, "Reggie Bush");
+INSERT INTO partners VALUES (6,1, "Robert Kardashian");
+INSERT INTO partners VALUES (7,1, "Bruce/Caitlyn Jenner");
+INSERT INTO partners VALUES (8,1, "Corey Gamble");
+INSERT INTO partners VALUES (9,2, "Scott Disick");
+INSERT INTO partners VALUES (10,2, "Younes Benjamin");
+INSERT INTO partners VALUES (11,2, "Travis Barker");
+INSERT INTO partners VALUES (12,4, "Lamar Odom");
+INSERT INTO partners VALUES (13,4, "French Montana");
+INSERT INTO partners VALUES (14,4, "James Harden");
+INSERT INTO partners VALUES (15,4, "Tristan Thompson");
+INSERT INTO partners VALUES (16,5, "Harry Styles");
+INSERT INTO partners VALUES (17, 5, "ASAP Rocky");
+INSERT INTO partners VALUES (18, 5, "Devin Booker");
+INSERT INTO partners VALUES (19, 6, "Tyga");
+INSERT INTO partners VALUES (20, 6, "Jaden Smith");
+INSERT INTO partners VALUES (21, 6, "Travis Scott");
+INSERT INTO partners VALUES (22, 7, "Adrienne Bailon");
+INSERT INTO partners VALUES (23, 7, "Blac Chyna");
+
+CREATE TABLE parent (id INTEGER PRIMARY KEY, children_id INTEGER, partners_id INTEGER, kardashians_id INTEGER);
+INSERT INTO parent VALUES (1, 1, 6, 1);
+INSERT INTO parent VALUES (2, 2, 6, 1);
+INSERT INTO parent VALUES (3, 3, 6, 1);
+INSERT INTO parent VALUES (4, 4, 7, 1);
+INSERT INTO parent VALUES (5, 5, 7, 1);
+INSERT INTO parent VALUES (6, 6, 6, 1);
+INSERT INTO parent VALUES (7, 7, 9, 2);
+INSERT INTO parent VALUES (8,8, 9, 2);
+INSERT INTO parent VALUES (9,9,9,2);
+INSERT INTO parent VALUES (10,10,3,3);
+INSERT INTO parent VALUES (11,11,3,3);
+INSERT INTO parent VALUES (12,12,3,3);
+INSERT INTO parent VALUES (13,13,3,3);
+INSERT INTO parent VALUES (14,14,15,4);
+INSERT INTO parent VALUES (15,15,21,6);
+INSERT INTO parent VALUES (16,16,21,6);
+INSERT INTO parent VALUES (17,17,23,6);
+
+/* Which children belong to which Kardashian? */
+SELECT kardashians.name, children.name FROM kardashians JOIN children ON kardashians.id = children.kardashians_id;
+
+/* What is the name of the childrens non Kardashian parent? */
+SELECT DISTINCT partners.name FROM partners JOIN parent ON partners.id = parent.partners_id;
+
+/* What are the names of both parents for each child? */
+SELECT kardashians.name, partners.name FROM kardashians JOIN parent ON kardashians.id = parent.kardashians_id JOIN partners ON partners.id = parent.partners_id WHERE parent.children_id = 4;
+
+/* Who is the other parent of Kris's children? */
+SELECT DISTINCT partners.name FROM partners JOIN parent ON partners.id = parent.partners_id JOIN kardashians ON kardashians.id = parent.kardashians_id WHERE kardashians.name = "Kris";
