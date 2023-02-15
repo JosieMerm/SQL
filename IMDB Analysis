@@ -1,0 +1,35 @@
+#What are the top 5 movies with the highest budgets?
+Select title, budget FROM movies ORDER BY budget DESC LIMIT 5;
+
+#What are the top 5 movies with the highest revenues?
+Select title, revenue from movies ORDER BY revenue DESC limit 5;
+
+#Who has directed the most movies and how many movies did they direct?
+select directors.name, count(movies.director_id) as Total_Movies FROM directors join movies ON directors.id = movies.director_id GROUP BY movies.director_id order by Total_Movies DESC limit 1;
+
+#List all the movies Steven Spielberg has directed.
+select title from movies join directors on movies.director_id = directors.id WHERE directors.name = 'Steven Spielberg';
+
+#What are the taglines for each Harry Potter movie?
+select title, tagline from movies where title like '%Harry Potter%';
+
+#What are the overviews for each of the Toy Story movies?
+select title, overview from movies where title like '%Toy Story%';
+
+#What is the average popularity for each director? 
+select directors.name, AVG(movies.popularity) as avg_pop from directors join movies on directors.id = movies.director_id group by movies.director_id order by avg_pop DESC;
+
+#What is the average popularity for director Christopher Nolan?
+select directors.name, avg(movies.popularity) from directors join movies on directors.id = movies.director_id where directors.name = 'Christopher Nolan';
+
+#Which movie has the highest popularity rating?
+select title, popularity from movies order by popularity desc limit 1;
+
+#How many directors are there in each gender catagory?
+select gender, count(gender) from directors group by gender;
+
+#List all the movies directed by women.
+select directors.name, movies.title from directors join movies on directors.id = movies.director_id where directors.gender = 1;
+
+Data Source:
+Oliviera, Paulo De, Luiz, Kaggle, 2020, https://www.kaggle.com/datasets/luizpaulodeoliveira/imdb-project-sql
