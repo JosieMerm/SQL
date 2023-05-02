@@ -1,0 +1,44 @@
+SELECT * FROM INHABITANT WHERE villageid IN(SELECT villageid FROM VILLAGE);
+
+select * from inhabitant where state= 'friendly';
+
+select * from inhabitant where state= 'friendly' and job= 'weaponsmith';
+
+select * from inhabitant where state= 'friendly' and job like '%smith';
+
+select personid from INHABITANT WHERE NAME= 'Stranger';
+
+select gold from inhabitant where personid in(select personid from INHABITANT WHERE NAME= 'Stranger');
+
+select * from ITEM where owner is NULL;
+
+update item set owner = 20 where owner is null;
+
+select * from item where owner= '20';
+
+select * from inhabitant where state= 'friendly' and job= 'dealer' or job= 'merchant';
+
+update item set owner = 15 where item= 'ring' or item= 'teapot';
+
+update inhabitant set name= 'Josie' where personid= '20';
+
+select * from inhabitant where job= 'baker' order by gold desc;
+
+select * from inhabitant where job= 'pilot';
+
+select inhabitant.name from village, inhabitant where village.villageid = inhabitant.villageid and village.name = 'Onionville' and village.chief = inhabitant.personid;
+
+SELECT COUNT(*) FROM inhabitant, village WHERE village.villageid = inhabitant.villageid AND village.name = 'Onionville' and village.chief = inhabitant.personid;
+
+SELECT inhabitant.name FROM inhabitant, village WHERE village.villageid = inhabitant.villageid AND village.name = 'Onionville' and inhabitant.gender = 'f';
+
+select sum(gold) from inhabitant where job = 'baker' or job= 'dealer' or job= 'merchant';
+
+Data/Game Source:
+SQL Island, https://sql-island.informatik.uni-kl.de/#. 
+
+SELECT state, AVG(inhabitant.gold) FROM inhabitant GROUP BY state ORDER BY AVG(inhabitant.gold);
+
+delete from inhabitant where name = 'Dirty Diane';
+
+update inhabitant set state = 'friendly' where job= 'pilot';
