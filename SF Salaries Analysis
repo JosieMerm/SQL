@@ -1,0 +1,29 @@
+#What is the toal number of employee, average basepay, and average total pay of each job per year?
+select jobtitle, count(jobtitle), round(avg(basepay) , 2)as basepay, round(avg(totalpay) ,2) as totalpay, year from salaries group by jobtitle, year order by year, count(jobtitle) desc;
+
+#For each year what are the top 10 jobs with the highest average total pay?
+select * from (select jobtitle, round(avg(totalpay), 2) as avgpay , year, row_number() over (partition by year order by round(totalpay, 2) desc) as year_rank from salaries group by jobtitle) ranks where year_rank <= 10;
+
+#What is the base pay and the average base for each job title? How does the base pay compare to the average base?
+select jobtitle, basepay, round(avg(basepay), 2) as avg_pay, case when basepay > round(avg(basepay), 2) then "above_avg" when basepay = round(avg(basepay), 2) then "avg" else "below_avg" end "compare" from salaries group by jobtitle order by basepay desc;
+
+#For each year what is the total amout of benefits given out, the average amount of benefits given out and the total number of employees working?
+select year, max(totalpaybenefits) as total_benefits, round(avg(totalpaybenefits) ,2) as avg_benefits, count(jobtitle) as employees from salaries group by year order by year, max(totalpaybenefits);
+
+#What is the overall amount of overtime given in each year?
+select round(sum(overtimepay), 2) as total_overtime, year from salaries group by year order by year asc;
+
+#Which individual person made the most overall money in each year?
+select employeename, jobtitle, max(totalpay), year from salaries group by year order by year asc;
+
+#Who were the top 3 overtime earners for each year? Please include employee name, jobtitle, and amount of overtime they recieved.
+select * from (select employeename, jobtitle, overtimepay, year, row_number() over (partition by year order by overtimepay desc) as overtime_rank from salaries) ranks where overtime_rank <= 3;
+
+#What are the names of the employees for each jobtitle broken down by year?
+select employeename, jobtitle, year from salaries order by year, jobtitle, employeename;
+
+#What are the names of the employees who worked during all 4 years?
+select count(employeename), employeename from salaries group by employeename having count(employeename) = 4;
+
+Data Source:
+Kaggle. “SF Salaries.” Kaggle, 5 Dec. 2019, www.kaggle.com/datasets/kaggle/sf-salaries. 
