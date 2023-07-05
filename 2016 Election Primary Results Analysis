@@ -1,0 +1,30 @@
+#What is the most populated county for each state in 2014? Rank them.
+select state_abbreviation, area_name, max(PST045214) as est_pop_2014 from county_facts group by state_abbreviation order by max(PST045214) desc;
+
+#Who was the top candidate in each county? Include the percentage of female population.
+select primary_results.state, primary_results.county, primary_results.candidate, county_facts.SEX255214 as female_percent_2014 from primary_results join county_facts on primary_results.fips = county_facts.fips group by primary_results.county order by primary_results.state, primary_results.county, max(primary_results.votes);
+
+#Who is the winning candidate for each county with a majority female population?
+select primary_results.state, primary_results.county, primary_results.candidate, county_facts.SEX255214 as female_percent_2014 from primary_results join county_facts on primary_results.fips = county_facts.fips where county_facts.SEX255214 > 50 group by primary_results.county order by primary_results.state, primary_results.county, max(primary_results.votes);
+
+#Rank the candidates based on the number of counties they won.
+select primary_results.candidate, count(primary_results.candidate) from primary_results join county_facts on primary_results.fips = county_facts.fips where county_facts.SEX255214 > 50 group by primary_results.candidate order by count(primary_results.candidate) DESC; 
+
+#List the county and winning candidate in order of highest female population.
+select primary_results.state, primary_results.county, primary_results.candidate, county_facts.SEX255214 as female_percent_2014 from primary_results join county_facts on primary_results.fips = county_facts.fips where county_facts.SEX255214 > 50 group by primary_results.county order by county_facts.SEX255214 desc;
+
+#Which candidate won in the most populated county of each state? How many votes did they get and what was the female population?
+select county_facts.state_abbreviation, county_facts.area_name, primary_results.candidate, max(primary_results.votes) as max_votes, max(county_facts.PST045214) as est_pop_2014, county_facts.SEX255214 as female_percent_2014 from county_facts join primary_results on county_facts.fips = primary_results.fips group by county_facts.state_abbreviation order by max(county_facts.PST045214) DESC limit 10;
+
+#For each county include the percentage of population with high school diplomas, bachelor degree or higher, and female population.
+select county_facts.state_abbreviation, county_facts.area_name, county_facts.EDU635213 as high_school_edu, county_facts.EDU685213 as bach_higher_edu, county_facts.SEX255214 as female_pop_2014 from county_facts;
+
+#What  is the avg percent of voters with a high school diploma, bachelors degree or higher, and avg percent of female population for each candidate? 
+select primary_results.candidate, round(avg(county_facts.EDU635213), 2) as avg_highschool_diploma, round(avg(county_facts.EDU685213), 2) as avg_bach_higher, round(avg(county_facts.SEX255214), 2) as avg_female_pop from primary_results join county_facts on primary_results.fips = county_facts.fips group by primary_results.candidate;
+
+#Order candidates based on highest amount of higher education that their voters received.
+select primary_results.candidate, round(avg(county_facts.EDU635213), 2) as avg_highschool_diploma, round(avg(county_facts.EDU685213), 2) as avg_bach_higher from primary_results join county_facts on primary_results.fips = county_facts.fips group by primary_results.candidate order by avg_bach_higher desc;
+
+
+Data Source:
+Hamner, Ben. “2016 US Election.” Kaggle, 13 Nov. 2019, www.kaggle.com/datasets/benhamner/2016-us-election. 
